@@ -20,10 +20,6 @@ import be.ipl.vinci.business.User;
 @Path("user")
 public class UserResource {
 	
-	
-	
-	
-	
 	@POST
 	@Path("register")
 	@Consumes(MediaType.APPLICATION_JSON)

@@ -1,18 +1,19 @@
 package be.ipl.vinci.business;
 
 public class SheetItem {
-	
-	
-	private int id; 
+
+	private int id;
 	private int sheetId;
 	private int itemId;
 	private boolean loveIt;
 	private boolean needHelp;
 	private boolean wannaChange;
-	
+	private boolean favorite;
 	
 	/**
-	 * Initialize booleans to false // Pas plutot mieux de ne pas les initialiser du coup ?
+	 * Initialize booleans to false // Pas plutot mieux de ne pas les initialiser du
+	 * coup ?
+	 * 
 	 * @param id
 	 * @param sheetId
 	 * @param itemId
@@ -27,55 +28,48 @@ public class SheetItem {
 //		this.wannaChange = false;
 	}
 
-
 	public int getId() {
 		return id;
 	}
-
 
 	public int getSheetId() {
 		return sheetId;
 	}
 
-
 	public int getItemId() {
 		return itemId;
 	}
-
 
 	public boolean isLoveIt() {
 		return loveIt;
 	}
 
-
 	public boolean isNeedHelp() {
 		return needHelp;
 	}
 
-
 	public boolean isWannaChange() {
 		return wannaChange;
 	}
-
+	
+	public boolean isFavorite() {
+		return favorite;
+	}
 
 	public void setSheetId(int sheetId) {
 		this.sheetId = sheetId;
 	}
 
-
 	public void setNeedHelp(boolean needHelp) {
 		this.needHelp = needHelp;
 	}
-
 
 	public void setWannaChange(boolean wannaChange) {
 		this.wannaChange = wannaChange;
 	}
 	
-	
-	
-	
-	
-	
+	public void setFavorite(boolean favorite) {
+		this.favorite = favorite;
+	}
 
 }
