@@ -24,7 +24,7 @@ public class User {
 	private UserPersistence userBack = new UserPersistence();
 
 	public User(String name, String surname, String code, LocalDate birthday, String language, String dominance,
-			String schooling, String schooling_level, int contact_one, int contact_two, int contact_three) {
+			String schooling, String schooling_type,String schooling_level, int contact_one, int contact_two, int contact_three) {
 		this.name = name;
 		this.surname = surname;
 		this.code = code;
@@ -32,6 +32,7 @@ public class User {
 		this.language = language;
 		this.dominance = dominance;
 		this.schooling = schooling;
+		this.schooling_type = schooling_type;
 		this.schooling_level = schooling_level;
 		this.contact_one = contact_one;
 		this.contact_two = contact_two;
@@ -77,6 +78,26 @@ public class User {
 			this.service.commitTransaction();
 		}
 	}
+	
+	public User getAllInfo(String code) {
+		try {
+			this.service.startTransaction();
+			User u = this.userBack.getAllInfo(code);
+			if(u != null) {
+				return u;
+			}else {
+				return null;
+			}
+		} catch (Exception exc) {
+			System.out.println("Error in connecting user : " + exc);
+			exc.printStackTrace();
+			this.service.rollbackTransaction();
+			return null;
+		} finally {
+			//this.service.commitTransaction();
+		}
+	}
+	
 
 	public String getName() {
 		return name;

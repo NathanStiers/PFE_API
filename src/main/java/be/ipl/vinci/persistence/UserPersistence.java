@@ -1,6 +1,7 @@
 package be.ipl.vinci.persistence;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import be.ipl.vinci.business.User;
 
@@ -37,6 +38,23 @@ public class UserPersistence {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
+		}
+	}
+	
+	public User getAllInfo(String code) {
+		PreparedStatement ps;
+		
+		try {
+			ps = backend.getPreparedStatement("SELECT * FROM public.\"Users\" WHERE \"Code\" = ?");
+			ps.setString(1, code);
+			ResultSet rs = ps.executeQuery();
+			rs.next();
+			return new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getDate(4).toLocalDate(),rs.getString(5), rs.getString(6),
+					rs.getString(7), rs.getString(8), rs.getString(9), rs.getInt(10), rs.getInt(11), rs.getInt(12));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 

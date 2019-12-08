@@ -3,6 +3,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -53,5 +54,19 @@ public class UserResource {
 		}
 		
 	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/info/{code}")
+	public Response getInfo(@PathParam("code") String code) {
+		Gson gson = new Gson();
+		User u = new User();
+		String json = gson.toJson(u.getAllInfo(code));
+		System.out.println(json);
+		
+		
+		return Response.status(Response.Status.OK).entity(json).build();
+	}
+	
 
 }
