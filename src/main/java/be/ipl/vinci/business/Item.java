@@ -6,6 +6,7 @@ public class Item {
 	private int category;
 	private String image;
 	private String name;
+	private String note;
 
 	public Item(int id, int category, String image, String name) {
 		this.id = id;
