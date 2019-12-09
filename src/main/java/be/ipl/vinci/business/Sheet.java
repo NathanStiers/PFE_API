@@ -71,5 +71,26 @@ public class Sheet {
 		
 	}
 	
+	// Premier filtre
+	public Sheet getSheetForName(String name) {
+		try {
+			this.service.startTransaction();
+			Sheet sheet = this.sheetBack.getSheetForName(name);
+			if(sheet != null) {
+				return sheet;
+			}else {
+				return null;
+			}
+		} catch (Exception exc) {
+			System.out.println("Error in connecting user : " + exc);
+			exc.printStackTrace();
+			this.service.rollbackTransaction();
+			return null;
+		} finally {
+			//this.service.commitTransaction();
+		}
+		
+	}
+	
 	
 }
