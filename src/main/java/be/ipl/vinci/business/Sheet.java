@@ -66,7 +66,7 @@ public class Sheet {
 			this.service.rollbackTransaction();
 			return null;
 		} finally {
-			//this.service.commitTransaction();
+			this.service.commitTransaction();
 		}
 		
 	}

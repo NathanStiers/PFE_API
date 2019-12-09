@@ -8,11 +8,12 @@ public class Item {
 	private String name;
 	private String note;
 
-	public Item(int id, int category, String image, String name) {
+	public Item(int id, int category, String image, String name, String note) {
 		this.id = id;
 		this.category = category;
 		this.image = image;
 		this.name = name;
+		this.note = note;
 	}
 
 	public int getId() {
