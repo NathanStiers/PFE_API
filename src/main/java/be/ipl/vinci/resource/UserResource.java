@@ -47,6 +47,7 @@ public class UserResource {
 		User u = new User();
 		User userToConnect = gson.fromJson(json, User.class);
 		System.out.println(userToConnect.toString());
+		System.out.println("Stopped here ?");
 		if(u.connectUser(userToConnect)) {
 			return Response.status(Response.Status.OK).build(); 
 		}else {
@@ -63,10 +64,19 @@ public class UserResource {
 		User u = new User();
 		String json = gson.toJson(u.getAllInfo(code));
 		System.out.println(json);
-		
-		
 		return Response.status(Response.Status.OK).entity(json).build();
 	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("liste")
+	public Response getAllUser() {
+		Gson gson = new Gson();
+		User u = new User();
+		String json = gson.toJson(u.getAllUser());
+		return Response.status(Response.Status.OK).entity(json).build();
+	}
+	
 	
 
 }

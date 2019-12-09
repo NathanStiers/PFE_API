@@ -66,7 +66,7 @@ public class Item {
 			this.service.rollbackTransaction();
 			return null;
 		} finally {
-			//this.service.commitTransaction();
+			this.service.commitTransaction();
 		}
 		
 	}

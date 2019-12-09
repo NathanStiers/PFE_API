@@ -1,6 +1,9 @@
 package be.ipl.vinci.business;
 
 import java.time.LocalDate;
+import java.util.List;
+
+import com.google.gson.JsonElement;
 
 import be.ipl.vinci.persistence.IPersistenceService;
 import be.ipl.vinci.persistence.PersistenceServiceImpl;
@@ -17,14 +20,14 @@ public class User {
 	private String schooling;
 	private String schooling_level;
 	private String schooling_type; // can be null
-	private int contact_one;
-	private int contact_two;
-	private int contact_three;
+	private String contact_one;
+	private String contact_two;
+	private String contact_three;
 	private IPersistenceService service = new PersistenceServiceImpl();
 	private UserPersistence userBack = new UserPersistence();
 
 	public User(String name, String surname, String code, LocalDate birthday, String language, String dominance,
-			String schooling, String schooling_type,String schooling_level, int contact_one, int contact_two, int contact_three) {
+			String schooling, String schooling_type,String schooling_level, String contact_one, String contact_two, String contact_three) {
 		this.name = name;
 		this.surname = surname;
 		this.code = code;
@@ -37,8 +40,11 @@ public class User {
 		this.contact_one = contact_one;
 		this.contact_two = contact_two;
 		this.contact_three = contact_three;
-		this.service = new PersistenceServiceImpl();
-		this.userBack = new UserPersistence();
+	}
+	
+	public User(String surname, String code) {
+		this.surname = surname;
+		this.code = code;
 	}
 
 	public User() {
@@ -115,6 +121,25 @@ public class User {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return this.name + " " + this.surname + " " + this.code;
+	}
+
+	public List<User> getAllUser() {
+		try {
+			this.service.startTransaction();
+			List<User> list = this.userBack.getAllusers();
+			if(list != null) {
+				return list;
+			}else {
+				return null;
+			}
+		} catch (Exception exc) {
+			System.out.println("Error in getting images : " + exc);
+			exc.printStackTrace();
+			this.service.rollbackTransaction();
+			return null;
+		} finally {
+			//this.service.commitTransaction();
+		}
 	}
 
 }

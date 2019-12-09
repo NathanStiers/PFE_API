@@ -18,13 +18,13 @@ public class ItemPersistence {
 		try {
 			ps = backend.getPreparedStatement("SELECT * FROM public.\"Items\"");
 			ResultSet rs = ps.executeQuery();
-			if (rs.getFetchSize() <= 0) {
+			if (rs == null) {
 				return null;
 			}
 			List<Item> toReturn = new ArrayList<Item>();
-			do {
+			while (rs.next()) {
 				toReturn.add(new Item(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4)));
-			} while (rs.next());
+			}
 
 			return toReturn;
 
