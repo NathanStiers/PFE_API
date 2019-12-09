@@ -33,4 +33,20 @@ public class SheetResource {
 		}	
 	}
 	
+	@GET
+	@Path("/name/{name}")
+	@Produces(MediaType.APPLICATION_JSON) // en fait si je réflechis c'est probablement un job pour le front directement
+	public Response getSheetForName(@PathParam("name") String name) {
+		
+		Gson gson = new Gson();
+		Sheet s = new Sheet();
+		
+		Sheet sheetToReturn = s.getSheetForName(name);
+		if(sheetToReturn != null) {
+			return  Response.status(Response.Status.OK).entity(gson.toJson(sheetToReturn)).build();
+		} else {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}	
+	}
+	
 }
