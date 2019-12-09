@@ -1,5 +1,12 @@
 package be.ipl.vinci.business;
 
+import org.glassfish.jersey.internal.guava.MoreObjects.ToStringHelper;
+
+import be.ipl.vinci.persistence.IPersistenceService;
+import be.ipl.vinci.persistence.PersistenceServiceImpl;
+import be.ipl.vinci.persistence.SheetItemPersistence;
+import be.ipl.vinci.persistence.UserPersistence;
+
 public class SheetItem {
 
 	private int id;
@@ -9,7 +16,9 @@ public class SheetItem {
 	private boolean needHelp;
 	private boolean wannaChange;
 	private boolean favorite;
-	
+	private String comment;
+	private IPersistenceService service = new PersistenceServiceImpl();
+	private SheetItemPersistence sheetItemBack = new SheetItemPersistence();
 	/**
 	 * Initialize booleans to false // Pas plutot mieux de ne pas les initialiser du
 	 * coup ?
@@ -27,6 +36,38 @@ public class SheetItem {
 //		this.needHelp = false;
 //		this.wannaChange = false;
 	}
+	
+	
+	public SheetItem() {
+		// TODO Auto-generated constructor stub
+	}
+
+
+	public boolean updateSheetItem(SheetItem i) {
+		try {
+			this.service.startTransaction();
+			 return this.sheetItemBack.updateSheetItemById(i.getId(), i.isLoveIt(), i.isNeedHelp(), i.isWannaChange(), i.isFavorite(), i.getComment());
+
+		} catch (Exception exc) {
+			System.out.println("Error in update sheet item: " + exc);
+			exc.printStackTrace();
+			this.service.rollbackTransaction();
+			return false;
+		} finally {
+			this.service.commitTransaction();
+		}
+		
+	}
+	
+	public String toString() {
+		return this.id + " " + this.comment + " " + this.favorite + " " + this.loveIt;
+	}
+	
+
+	public String getComment() {
+		return comment;
+	}
+
 
 	public int getId() {
 		return id;
