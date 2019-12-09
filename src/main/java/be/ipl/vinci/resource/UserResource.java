@@ -1,19 +1,17 @@
 package be.ipl.vinci.resource;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
-import javax.ws.rs.core.UriInfo;
 
 import com.google.gson.Gson;
 
+import be.ipl.vinci.business.Configuration;
 import be.ipl.vinci.business.User;
 
 
@@ -41,6 +39,7 @@ public class UserResource {
 	@POST
 	@Path("connection")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response connectUser(String json) {
 		System.out.println("test connection");
 		Gson gson = new Gson();
@@ -49,7 +48,8 @@ public class UserResource {
 		System.out.println(userToConnect.toString());
 		System.out.println("Stopped here ?");
 		if(u.connectUser(userToConnect)) {
-			return Response.status(Response.Status.OK).build(); 
+			Configuration config = u.getConfig(userToConnect);
+			return Response.status(Response.Status.OK).entity(gson.toJson(config)).build(); 
 		}else {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}
@@ -76,7 +76,4 @@ public class UserResource {
 		String json = gson.toJson(u.getAllUser());
 		return Response.status(Response.Status.OK).entity(json).build();
 	}
-	
-	
-
 }

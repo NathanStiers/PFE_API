@@ -3,12 +3,10 @@ package be.ipl.vinci.business;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.google.gson.JsonElement;
-
 import be.ipl.vinci.persistence.IPersistenceService;
 import be.ipl.vinci.persistence.PersistenceServiceImpl;
 import be.ipl.vinci.persistence.UserPersistence;
-
+import be.ipl.vinci.business.Configuration;
 public class User {
 
 	private String name;
@@ -94,6 +92,23 @@ public class User {
 			}else {
 				return null;
 			}
+		} catch (Exception exc) {
+			System.out.println("Error in connecting user : " + exc);
+			exc.printStackTrace();
+			this.service.rollbackTransaction();
+			return null;
+		} finally {
+			this.service.commitTransaction();
+		}
+	}
+	
+	public Configuration getConfig(User u) {
+		try {
+			this.service.startTransaction();
+			Configuration config = this.userBack.getConfigForUser(u);
+			
+			return config;
+			
 		} catch (Exception exc) {
 			System.out.println("Error in connecting user : " + exc);
 			exc.printStackTrace();
