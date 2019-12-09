@@ -1,8 +1,11 @@
 package be.ipl.vinci.persistence;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 
+import be.ipl.vinci.business.Configuration;
 import be.ipl.vinci.business.User;
 
 public class UserPersistence {
@@ -18,23 +21,53 @@ public class UserPersistence {
 	
 	public void registerUser(User u) {
 		try {
-			PreparedStatement ps = backend.getPreparedStatement("INSERT INTO public.\"Users\"(\"Name\", \"Surname\", \"Code\") VALUES (?, ?, ?)");
+			PreparedStatement ps = backend.getPreparedStatement("INSERT INTO public.\"Users\"(\"Name\", \"Surname\", \"Code\", \"Birthdate\", \"Language\", \"Dominance\", \"Schooling\", \"Schooling_level\") VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 			ps.setString(1, u.getName());
 			ps.setString(2, u.getSurname());
 			ps.setString(3, u.getCode());
+			ps.setDate(4, Date.valueOf(LocalDate.now()));
+			ps.setString(5, "Francais");
+			ps.setString(6, "Droitier");
+			ps.setString(7, "Normal");
+			ps.setString(8, "Troisième");
+			
 			ps.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	public Configuration getConfigForUser(User u) {
+		PreparedStatement ps;
+		try {
+			ps = backend.getPreparedStatement("SELECT \"Need\" FROM public.\"Needs\" n WHERE \"Child\"=?");
+			ps.setString(1, u.getCode());
+			ResultSet rs = ps.executeQuery();
+			Configuration config = new Configuration();
+			while(rs.next()) {
+				config.addNeed(rs.getString(1));
+			}
+			return config;
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 
 	public boolean connectUser(User u) {
 		PreparedStatement ps;
 		try {
-			ps = backend.getPreparedStatement("SELECT * FROM public.\"Users\" WHERE code = ? AND name = ?");
+			ps = backend.getPreparedStatement("SELECT * FROM public.\"Users\" WHERE \"Code\" = ? AND \"Name\" = ?");
 			ps.setString(1, u.getCode());
 			ps.setString(2, u.getName());
-			return ps.getFetchSize() == 1;
+			System.out.println(ps);
+			ResultSet rs = ps.executeQuery();
+			System.out.println(ps.getFetchSize());
+			return rs.getFetchSize() == 1;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -57,5 +90,7 @@ public class UserPersistence {
 			return null;
 		}
 	}
+	
+	
 
 }
